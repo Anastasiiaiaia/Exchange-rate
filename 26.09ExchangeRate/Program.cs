@@ -30,22 +30,12 @@ namespace _26._09ExchangeRate
 
                     await stream.WriteAsync(data);
 
-                    while (true)
+
+                    while (((bytesRead = stream.ReadByte()) != '\n'))
                     {
-                        bytesRead = stream.ReadByte();
-
-                        if (bytesRead == -1)
-                        {
-                            return;
-                        }
-
-                        if (bytesRead == '\n')
-                        {
-                            break;
-                        }
-
-                        response.Add((byte)bytesRead);
+                        response.Add(((byte)bytesRead));
                     }
+
                     var rate = Encoding.UTF8.GetString(response.ToArray());
                     Console.WriteLine($"{currency}: {rate}");
                     if (rate.Contains("Досягнуто максимальну кількість запитів"))
